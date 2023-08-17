@@ -1,0 +1,6 @@
+streamlit
+python-dotenv
+pipreqs # for generating requirements.txt based on imports in project
+
+pandas # optional, but used for tables
+openai # for streamlit-projectstarter demo purposes
