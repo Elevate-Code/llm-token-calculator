@@ -13,6 +13,8 @@ st.set_page_config(
 
 st.title("🧮 LLM Token Calculator")
 
+st.write("Calculates the number of tokens and estimated cost for a given input/output text and LLM model.")
+
 MODEL_CONFIG = {
     # pricing format is like this: (input_cost_per_token, output_cost_per_token),
     # OpenAI pricing: https://openai.com/pricing
@@ -39,7 +41,7 @@ def calculate_cost(model_name, in_tokens, out_tokens):
     return total_request_cost
 
 
-llm_model = st.radio("LLM Model", tuple(MODEL_CONFIG.keys()), horizontal=True)
+llm_model = st.selectbox("LLM Model", tuple(MODEL_CONFIG.keys()))
 
 st.subheader("Input")
 
@@ -77,8 +79,8 @@ st.write(f"Characters: {char_count} || Words: {word_count} || Proper Sentences: 
 # calculate tokens
 model_max_tokens = MODEL_CONFIG[llm_model]['max_tokens']
 in_cost = calculate_cost(llm_model, in_tokens, out_tokens=0)
-st.write(
-    f"**{in_tokens}** request tokens ({in_tokens / model_max_tokens * 100:.0f}% of {model_max_tokens} max) || **Cost:** ${in_cost:,.4f}")
+st.write(f"**{in_tokens}** request tokens ({in_tokens / model_max_tokens * 100:.0f}% of {model_max_tokens} max) || **Cost:** ${in_cost:,.4f}")
+
 
 st.subheader("Output")
 
@@ -89,4 +91,10 @@ st.subheader("Total")
 total_cost = calculate_cost(llm_model, in_tokens, out_tokens)
 st.write(f":orange[**Total Request Cost:**] ${total_cost:,.4f}")
 total_tokens = in_tokens + out_tokens
-st.write(f"**{total_tokens}** request tokens ({total_tokens / model_max_tokens * 100:.0f}% of {model_max_tokens} max)")
+percentage = total_tokens / model_max_tokens * 100
+if percentage > 100:
+    st.markdown(f"**{total_tokens}** request tokens (**:red[{percentage:.0f}%]** of {model_max_tokens} max)")
+    st.write(":red[**Warning:**] This request will exceed the maximum number of tokens allowed for this model.")
+else:
+    st.write(f"**{total_tokens}** request tokens ({percentage:.0f}% of {model_max_tokens} max)")
+
