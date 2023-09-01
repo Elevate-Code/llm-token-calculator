@@ -14,6 +14,7 @@ st.set_page_config(
 st.title("🧮 LLM Token Calculator")
 
 st.write("Calculates the number of tokens and estimated cost for a given input/output text and LLM model.")
+st.write("GitHub repo: https://github.com/Ecom-Analytics-Co/llm-token-calculator")
 
 MODEL_CONFIG = {
     # pricing format is like this: (input_cost_per_token, output_cost_per_token),
@@ -45,22 +46,24 @@ llm_model = st.selectbox("LLM Model", tuple(MODEL_CONFIG.keys()))
 
 st.subheader("Input")
 
-col1, col2 = st.columns(2)
-with col1:
-    title, text = one_paragraph()
-    if st.button(title):
-        st.session_state.input_text = text
-with col2:
-    title, text = one_page()
-    if st.button(title):
-        st.session_state.input_text = text
+# col1, col2 = st.columns(2)
+# with col1:
+#     title, text = one_paragraph()
+#     if st.button(title):
+#         st.session_state.input_text = text
+#         st.experimental_rerun()
+# with col2:
+#     title, text = one_page()
+#     if st.button(title):
+#         st.session_state.input_text = text
+#         st.experimental_rerun()
+#
+# # Initialize session_state if it's not set
+# if 'input_text' not in st.session_state:
+#     st.session_state.input_text = ""
 
-# Initialize session_state if it's not set
-if 'input_text' not in st.session_state:
-    st.session_state.input_text = ""
-
-input_text = st.text_area("Sys + User Text", value=st.session_state.input_text, height=350)
-st.session_state.input_text = input_text
+input_text = st.text_area("Sys + User Text", height=350)
+# st.session_state.input_text = input_text
 
 if llm_model in ['claude-2', 'claude-instant']:
     # claude *maybe* uses same token encoder as GPT-4: `cl100k_base`
