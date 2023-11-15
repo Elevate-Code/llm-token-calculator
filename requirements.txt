@@ -1,5 +1,5 @@
-streamlit
-python-dotenv
-pipreqs # for generating requirements.txt based on imports in project
+streamlit==1.25.0
+python-dotenv==1.0.0
+pipreqs==0.4.13 # for maintaining requirements.txt; `pipreqs --print`
 
-tiktoken
+tiktoken==0.4.0
